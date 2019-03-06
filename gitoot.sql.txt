@@ -1,0 +1,26 @@
+﻿Create Database and Tables
+
+
+create database if not exists gitoot;
+use gitoot;
+
+
+create table blogPosts (
+ id int(11) not null auto_increment,
+ postTitle varchar(255) not null,
+ postDescription text not null,
+ postContent text not null,
+ postCategory varchar(255),
+ postAuthor varchar(255),
+ postDate datetime,
+ primary key (id)
+);
+
+
+create table blogUsers (
+ id int(11) not null auto_increment,
+ userName varchar(255) not null,
+ userPwd varchar(255) not null,
+ userEmail varchar(255),
+ primary key (id)
+);
