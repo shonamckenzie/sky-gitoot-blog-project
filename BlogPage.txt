@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Loch Lomond</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <style>
+    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+    .row.content {height: 1500px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height: auto;} 
+    }
+  </style>
+</head>
+<body>
+
+   <div class="col-sm-9">
+            
+      <h2>"On the bonnie, bonnie banks of Loch Lomond</h2>
+      <h5><span class="glyphicon glyphicon-time"></span> Post by Grace Stewart, March 6, 2019.</h5>
+      <h5><span class="label label-primary">Outdoors</span> <span class="label label-danger">Couples</span> <span class="label label-danger">Families</span> <span class="label label-danger">Dog Lovers</span> <span class="label label-danger">Adventurists</span> <span class="label label-danger">Hillwalking</span></h5><br>
+      <p>INSERT BLOG</p>
+      <br><br>
+      
+     
+      <h4>Leave a Comment:</h4>
+      <form role="form">
+        <div class="form-group">
+          <textarea class="form-control" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+      <br><br>
+      
+      <p><span class="badge">2</span> Comments:</p><br>
+      
+      <div class="row">
+        <div class="col-sm-2 text-center">
+          <img src="Images/John Smith.jpg" class="img-circle height="65" width="65" alt="John Smith">
+
+        </div>
+        <div class="col-sm-10">
+          <h4>John Smith <small>Sep 29, 2015, 9:12 PM</small></h4>
+          <p>Keep up the GREAT work! Great blog about Loch Lomond and can't wait to go!</p>
+          <br>
+        </div>
+        <div class="col-sm-2 text-center">
+            <img src="Images/Rab Burns.jpg" class="img-circle" height="65" width="65" alt="John Smith">
+        </div>
+        <div class="col-sm-10">
+          <h4>Rab Burns <small>Sep 25, 2015, 8:25 PM</small></h4>
+          <p>Another great blog Grace, you capture it so poetically</p>
+          <br>
+          <p><span class="badge">1</span> Comment:</p><br>
+          <div class="row">
+            <div class="col-sm-2 text-center">
+                <img src="Images/Marco Polo.jpg" class="img-circle" height="65" width="65" alt="Marco">
+            </div>
+            <div class="col-xs-10">
+              <h4>Marco<small> Sep 25, 2015, 8:28 PM</small></h4>
+              <p>Doesn't she just! Can't wait to come across!</p>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+</html>
+
