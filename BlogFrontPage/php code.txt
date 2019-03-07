@@ -163,7 +163,8 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="#myPage">Logo</a>
+      <img src="Images/Scotland.jpg" alt="Scotland" width="100" height="70">
+      <a class="navbar-brand" href="#myPage" img src="Images/Scotland.jpg" alt="Scotland" width="100" height="70"></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
@@ -304,12 +305,11 @@
 
 <!-- Container (Contact Section) -->
 <div id="contact" class="container-left">
-  <h3 class="text-center">Comment</h3>
-  <p class="text-center"><em>We love to hear what you think!</em></p>
+  <p class="text-center"><em>Have a place you would like us to visit for our next blog? Drop us a note.</em></p>
+  <p class="text-center"><em>We love to get about!</em></p>
 
   <div class="row">
     <div class="col-md-4">
-      <p>Have a place you would like us to visit for our next blog? Drop us a note.</p>
       <p><span class="glyphicon glyphicon-map-marker"></span>Livingston</p> 
       <p><span class="glyphicon glyphicon-phone"></span>Phone: 01506 666999</p>
       <p><span class="glyphicon glyphicon-envelope"></span>Email: gitoot@gmail.com</p>
