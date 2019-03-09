@@ -5,22 +5,123 @@ create database if not exists gitoot;
 use gitoot;
 
 
-create table blogPosts (
- id int(11) not null auto_increment,
- postTitle varchar(255) not null,
- postDescription text not null,
- postContent text not null,
- postCategory varchar(255),
- postAuthor varchar(255),
- postDate datetime,
- primary key (id)
+create table users (
+ id int(11) not null auto_increment primary key,
+ name varchar(255) not null unique,
+ email varchar(255) not null unique,
+ role enum('User', 'Admin') default null,
+ password varchar(255) not null,
+ createdAt timestamp null default current_timestamp,
+ updatedAt timestamp null default null
 );
 
 
-create table blogUsers (
- id int(11) not null auto_increment,
- userName varchar(255) not null,
- userPwd varchar(255) not null,
- userEmail varchar(255),
- primary key (id)
+create table post (
+ id int(11) not null auto_increment primary key,
+ user_id int(11) default null,
+ title varchar(255) not null,
+ description varchar(255) not null unique,
+ image varchar(255) not null,
+ content longtext not null,
+ published tinyint(1) not null,
+ createdAt timestamp not null default current_timestamp on update current_timestamp,
+ updatedAt timestamp not null default '0000-00-00 00:00:00',
+ foreign key (user_id) references users (id)on delete no action on update no action
 );
+
+
+//if a user is updated or deleted their posts remain in the posts table
+
+
+
+
+
+
+
+
+create table category (
+id int(11) not null auto_increment primary key,
+name varchar(255) not null,
+description varchar(255) not null unique
+);
+
+
+//many to many relationship with post table, category stores categories and postCategory handles the relationship between posts and categories
+
+
+create table postCategory (
+id int(11) not null auto_increment primary key,
+post_id int(11) not null unique,
+category_id int(11) not null
+);
+
+
+
+
+create table location(
+id int(11) not null auto_increment primary key,
+name varchar(255) not null,
+locDescription varchar(255) not null unique
+);
+
+
+//many to many relationship with post table, location stores locations and postLocation handles the relationship between posts and locations
+
+
+create table postLocation (
+id int(11) not null auto_increment primary key,
+post_id int(11) not null unique,
+location_id int(11) not null
+);
+
+
+Need to set foreign key constraint so when a post is deleted their entry in the postCategory table will automatically be deleted too.
+Navigate to postCategory table, select structure, select relation view
+Repeat same steps for postLocation
+
+
+  
+
+
+
+  
+
+
+
+
+
+insert into users(id, name, email, role, password, createdAt, updatedAt)
+values(1, 'Shona', 'shona.mckenzie137@gmail.com', 'Admin', 'myPassword', '2019-03-09 17:04:00', '2019-03-09 17:04:00');
+
+
+
+
+insert into post(id, user_id, title, description, image, content, published, createdAt, updatedAt)
+values(1, 1, 'On the bonnie bonnie banks of Loch Lomond…', 'You can tak the high road, or you can tak the low road…', 'lochlomond.jpg', 'This not-so-little haven is home to our largest loch in Scotland and probably our second most famous after Loch Ness.  It was Scotlands first national park and as soon as you arrive you can instantly tell why we long to preserve it - and why year after year people return to its banks.', 1, '2019-03-09 17:04:00', '2019-03-09 17:04:00');
+
+
+
+
+insert into category(id, name, description)
+values(1, 'Family', 'family'),
+(2, 'Couples', 'couples'),
+(3, 'Dog Lovers', 'dog lovers');
+
+
+
+
+insert into postCategory(id, post_id, category_id)
+values(1,1,1);
+
+
+
+
+insert into location(id, name, locDescription)
+values(1, 'Argyle and Bute', 'argyle and bute'),
+(2, 'Fife', 'fife');
+
+
+
+
+insert into postLocation(id, post_id, location_id)
+values(1,1,1);
