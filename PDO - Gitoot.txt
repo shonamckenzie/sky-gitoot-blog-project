@@ -30,17 +30,16 @@ require_once('dbconn.php');
 
 
     try {
-        $stmt = $dbconn->query[b]('SELECT postID, postTitle,      
-        postDescription[c],postAuthor, postDate FROM blogPosts ORDER BY 
-        postID DESC');
+        $stmt = $dbconn->query[b]('SELECT id, title,      
+        description[c], createdAt FROM post ORDER BY 
+        id DESC');
         while($row = $stmt->fetch()){
             
             echo '<div>';
-                echo '<h1><a href="viewpost.php?id='.$row['postID'].'">'.$row['postTitle'].'</a></h1>';
-                echo’<p>’.$row[‘postAuthor’].’</p>’;
-                echo '<p>Posted on '.date('jS M Y H:i:s', strtotime($row['postDate'])).'</p>';
-                echo '<p>'.$row['postDesc'].'</p>';                
-                echo '<p><a href="viewpost.php?id='.$row['postID'].'">Read More</a></p>';                
+                echo '<h1><a href="viewpost.php?id='.$row['id'].'">'.$row['title'].'</a></h1>';
+                echo '<p>Posted on '.date('jS M Y H:i:s', strtotime($row['createdAt'])).'</p>';
+                echo '<p>'.$row['description'].'</p>';                
+                echo '<p><a href="viewpost.php?id='.$row['id'].'">Read More</a></p>';                
             echo '</div>';
 
 
@@ -51,6 +50,8 @@ require_once('dbconn.php');
         echo $e->getMessage();
     }
 ?>
+
+
 View Post
 viewpost.php
 
@@ -61,18 +62,17 @@ viewpost.php
 require_once('dbconn.php');
 
 
-$stmt = $dbconn->prepare[d]('SELECT postID, postTitle, postContent, postDate, postAuthor FROM blog_posts WHERE postID = :postID');
-$stmt->execute(array(':postID' => $_GET['id']));
+$stmt = $dbconn->prepare[d]('SELECT id, title, content, createdAt FROM post WHERE id = :id');
+$stmt->execute(array(':id' => $_GET['id']));
 $row = $stmt->fetch();
-if($row['postID'] == ''){
+if($row['id'] == ''){
    header('Location: ./');
    exit;[e]
 }
 echo '<div>';
-   echo '<h1>'.$row['postTitle'].'</h1>';
-    echo’<p>’.$row[‘postAuthor’].’</p>’;
-   echo '<p>Posted on '.date('jS M Y', strtotime($row['postDate'])).'</p>';
-   echo '<p>'.$row['postContent'].'</p>';                
+   echo '<h1>'.$row['title'].'</h1>';
+   echo '<p>Posted on '.date('jS M Y', strtotime($row['createdAt'])).'</p>';
+   echo '<p>'.$row['content'].'</p>';                
 echo '</div>';
 
 
@@ -89,18 +89,25 @@ addpost.php
   require_once('dbconn.php');
 
 
-  $postTitle = trim($_POST["postTitle"]);
-  $postDescription = trim($_POST["postDescription"]);
-  $postContent = trim($_POST["postContent"]);
-  $postCategory = trim($_POST["postCategory"]);
+  $title = trim($_POST["title"]);
+  $description = trim($_POST["description"]);
+  $image = trim($_POST["image"]);
+  $content = trim($_POST["content"]);
+  $published = trim($_POST["published"]);
+  $createdAt = trim($_POST["createdAt"]);
+  
+ 
 
 
-    $stmt = $dbconn->prepare("INSERT INTO blogPosts(postTitle, postDescription, postContent, postCategory)
-    VALUES (:postTitle, :postDescription, :postContent, :postCategory)");
-    $stmt->bindParam(':postTitle, $postTitle);
-    $stmt->bindParam(':postDescription, $postDescription);
-    $stmt->bindParam(':postContent, $postContent);
-    $stmt->bindParam(':postCategory, $postCategory);
+    $stmt = $dbconn->prepare("INSERT INTO post(title, description, image, content, published, createdAt)
+    VALUES (:title, :description, :image, :content, :published, :createdAt, :updatedAt)");
+    $stmt->bindParam(':title, $title);
+    $stmt->bindParam(':description, $description);
+    $stmt->bindParam(':image, $image);
+    $stmt->bindParam(':content, $content);
+    $stmt->bindParam(':published, $published);
+    $stmt->bindParam(':createdAt, $createdAt);
+    
  
     if($stmt->execute()){
       $result =1;
@@ -109,46 +116,6 @@ addpost.php
 
     echo $result;
     $dbconn = null;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 Edit Post
@@ -161,19 +128,21 @@ editpost.php
   require_once('dbconn.php');
 
 
-  $postTitle = trim($_POST["postTitle"]);
-  $postDescription = trim($_POST["postDescription"]);
-  $postContent = trim($_POST["postContent"]);
-  $postCategory = trim($_POST["postCategory"]);
-  $postID = trim($_POST[“postID”]);
+ $title = trim($_POST["title"]);
+  $description = trim($_POST["description"]);
+  $image = trim($_POST["image"]);
+  $content = trim($_POST["content"]);
+  $updatedAt = trim($_POST["updatedAt"]);
+  $id = trim($_POST[“id”]);
 
 
-    $stmt = $dbconn->prepare("UPDATE blogPosts set postTitle = :postTitle, postDescription = :postDescription, postContent = :postContent, postCategory = :postCategory where id = :id”)
-    $stmt->bindParam(':postTitle, $postTitle);
-    $stmt->bindParam(':postDescription, $postDescription);
-    $stmt->bindParam(':postContent, $postContent);
-    $stmt->bindParam(':postCategory, $postCategory);
-    $stmt->bindParam(':id, $postID);
+    $stmt = $dbconn->prepare("UPDATE post set title = :title, description = :description, image = :image, content = :content, updatedAt = :updatedAt where id = :id”)
+    $stmt->bindParam(':title, $title);
+    $stmt->bindParam(':description, $description);
+    $stmt->bindParam(':image, $image);
+    $stmt->bindParam(':content, $content);
+    $stmt->bindParam(':updatedAt, $updatedAt);
+    $stmt->bindParam(':id, $id);
  
     if($stmt->execute()){
       $result =1;
@@ -182,32 +151,6 @@ editpost.php
 
     echo $result;
     $dbconn = null;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -227,7 +170,7 @@ echo $id = intval($_POST['pid']);
 
 
 if(intval($id)){
-  $stmt = $dbconn->prepare("DELETE FROM blogPosts WHERE id = :id");
+  $stmt = $dbconn->prepare("DELETE FROM post WHERE id = :id");
   $stmt->bindParam(':id', $id, PDO::PARAM_INT);
   if($stmt->execute()){
     $result = 1;
@@ -236,27 +179,13 @@ if(intval($id)){
  echo $result;
  $dbconn = null;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 
 
 
 
 [a]want to figure out a way that the password is not in plain text here - don't understand how the hashing works
 [b]not sure whether to use a query or prepare statement here
-[c]use postDescription as the initial piece of chat about the blog
+[c]use description as the initial piece of chat about the blog
 [d]using a prepare statement as we're using $__GET
-[e]error handling, if no postID then redirect user to main page
+[e]error handling, if no id then redirect user to main page
