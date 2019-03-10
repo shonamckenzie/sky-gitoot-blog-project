@@ -5,30 +5,34 @@
 </div>
     <p>
         <label>Title</label>
-        <input class="w3-input" type="text" name="postTitle" required autofocus>
+        <input class="w3-input" type="text" name="title" required autofocus>
     </p>
         <p>
          <label>Description</label>   
-        <input class="w3-input" type="text" name="postDescription" required>
+        <input class="w3-input" type="text" name="description" required>
         
     </p>
     <p>
         <label>Content</label>
-        <input class="w3-input" type="text" name="postContent" required>
+        <input class="w3-input" type="text" name="content" required>
         
     </p>
         <p>
          <label>Category</label>   
-        <input class="w3-input" type="text" name="postCategory" required>
+        <input class="w3-input" type="text" name="category" required>
     </p>
     <p>
         <label>Author</label>
-        <input class="w3-input" type="text" name="postAuthor" required>
+        <input class="w3-input" type="text" name="author" required>
       
     </p>
         <p>
          <label>Date</label>   
-         <input class="w3-input" type="date" name="postDate" required>
+         <input class="w3-input" type="date" name="date" required>
+    </p>
+     <p>
+         <label>Date</label>   
+         <input class="w3-input" type="location" name="location" required>
     </p>
     
     

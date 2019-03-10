@@ -12,7 +12,7 @@
   <body>
     <header class="w3-container w3-gray">
       <a href='index.php'>Home</a>
-      <a href='?controller=blogPost&action=readAll'>Products</a>
+      <a href='?controller=blogPost&action=readAll'>Blogs</a>
       <a href='?controller=blogPost&action=create'>Add Product</a>
     </header>
 <div class="w3-container w3-pink">

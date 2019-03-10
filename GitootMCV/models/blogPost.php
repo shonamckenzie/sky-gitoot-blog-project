@@ -3,21 +3,23 @@
 
     // we define 7 attributes
     public $id;
-    public $postTitle;
-    public $postDescription;
-    public $postContent;
-    public $postCategory;
-    public $postAuthor;
-    public $postDate;
+    public $title;
+    public $description;
+    public $content;
+    public $category;
+    public $author;
+    public $date;
+    public $location;
 
-    public function __construct($id, $postTitle, $postDescription, $postContent, $postCategory, $postAuthor, $postDate) {
+    public function __construct($id, $title, $description, $content, $category, $author, $date, $location) {
       $this->id    = $id;
-      $this->postTitle  = $postTitle;
-      $this->postDescription = $postDescription;
-      $this->postContent = $postContent;
-      $this->postCategory = $postCategory;
-      $this->postAuthor = $postAuthor;
-      $this->postDate = $postDate;
+      $this->title  = $title;
+      $this->description = $description;
+      $this->content = $content;
+      $this->category = $category;
+      $this->author = $author;
+      $this->date = $date;
+      $this->location = $location;
     }
 
     public static function all() {
@@ -26,12 +28,18 @@
       $req = $db->query('SELECT * FROM blogPost');
       // we create a list of Product objects from the database results
       foreach($req->fetchAll() as $blogPost) {
-          $list[] = new blogPost($blogPost['id'], $blogPost['postTitle'], 
-                  $blogPost['postDescription'], $blogPost['postContent'], 
-                  $blogPost['postCategory'], $blogPost['postAuthor'], $blogPost['postDate']);
+          $list[] = new blogPost($blogPost['id'], $blogPost['title'], 
+                  $blogPost['description'], $blogPost['content'], 
+                  $blogPost['category'], $blogPost['author'], $blogPost['date'], $blogPost['location']);
       }
       return $list;
     }
+    
+    
+    
+    
+    
+    
 
     public static function find($id) {
       $db = Db::getInstance();
@@ -42,8 +50,8 @@
       $req->execute(array('id' => $id));
       $blogPost = $req->fetch();
 if($blogPost){
-      return new blogPost ($blogPost['id'], $blogPost['postTitle'], $blogPost['postDescription'], 
-              $blogPost['postContent'], $blogPost['postCategory'], $blogPost['postAuthor'], $blogPost['postDate']);
+      return new blogPost ($blogPost['id'], $blogPost['title'], $blogPost['description'], 
+              $blogPost['content'], $blogPost['category'], $blogPost['author'], $blogPost['date'], $blogPost['location']);
     }
     else
     {
@@ -54,98 +62,107 @@ if($blogPost){
 
 public static function update($id) {
     $db = Db::getInstance();
-    $req = $db->prepare("Update blogPost set postTitle=:postTitle, "
-            . "postDescription=:postDescription, postContent=:postContent, "
-            . "postCategory=:postCategory, postAuthor=:postAuthor, postDate=:postDate"
+    $req = $db->prepare("Update blogPost set title=:title, "
+            . "description=:description, content=:content, "
+            . "category=:category, author=:author, date=:date,"
+            . "location=:location"
             ." where id=:id");
     $req->bindParam(':id', $id);
-    $req->bindParam(':postTitle', $postTitle);
-    $req->bindParam(':postDescription', $postDescription);
-    $req->bindParam(':postContent', $postContent);
-    $req->bindParam(':postCategory', $postCategory);
-    $req->bindParam(':postAuthor', $postAuthor);
-    $req->bindParam(':postDate', $postDate);
+    $req->bindParam(':title', $title);
+    $req->bindParam(':description', $description);
+    $req->bindParam(':content', $content);
+    $req->bindParam(':category', $category);
+    $req->bindParam(':author', $author);
+    $req->bindParam(':date', $date);
+    $req->bindParam(':location', $location);
     
     
 // set name and price parameters and execute
-    if(isset($_POST['postTitle'])&& $_POST['postTitle']!=""){
-        $filteredpostTitle = filter_input(INPUT_POST,'postTitle', FILTER_SANITIZE_SPECIAL_CHARS);
+    if(isset($_POST['title'])&& $_POST['title']!=""){
+        $filteredtitle = filter_input(INPUT_POST,'title', FILTER_SANITIZE_SPECIAL_CHARS);
     }
-    if(isset($_POST['postDescription'])&& $_POST['postDescription']!=""){
-        $filteredpostDescription = filter_input(INPUT_POST,'postDescription', FILTER_SANITIZE_SPECIAL_CHARS);
+    if(isset($_POST['description'])&& $_POST['description']!=""){
+        $filtereddescription = filter_input(INPUT_POST,'description', FILTER_SANITIZE_SPECIAL_CHARS);
     }
-    if(isset($_POST['postContent'])&& $_POST['postContent']!=""){
-        $filteredpostContent = filter_input(INPUT_POST,'postContent', FILTER_SANITIZE_SPECIAL_CHARS);
+    if(isset($_POST['content'])&& $_POST['content']!=""){
+        $filteredcontent = filter_input(INPUT_POST,'content', FILTER_SANITIZE_SPECIAL_CHARS);
     }
-    if(isset($_POST['postCategory'])&& $_POST['postCategory']!=""){
-        $filteredpostCategory = filter_input(INPUT_POST,'postCategory', FILTER_SANITIZE_SPECIAL_CHARS);
+    if(isset($_POST['category'])&& $_POST['category']!=""){
+        $filteredcategory = filter_input(INPUT_POST,'category', FILTER_SANITIZE_SPECIAL_CHARS);
     }
-    if(isset($_POST['postAuthor'])&& $_POST['postAuthor']!=""){
-        $filteredpostAuthor = filter_input(INPUT_POST,'postAuthor', FILTER_SANITIZE_SPECIAL_CHARS);
+    if(isset($_POST['author'])&& $_POST['author']!=""){
+        $filteredautor = filter_input(INPUT_POST,'author', FILTER_SANITIZE_SPECIAL_CHARS);
     }
-    if(isset($_POST['postDate'])&& $_POST['postDate']!=""){
-        $filteredpostDate = filter_input(INPUT_POST,'postDate', FILTER_SANITIZE_SPECIAL_CHARS);
+    if(isset($_POST['date'])&& $_POST['date']!=""){
+        $filtereddate = filter_input(INPUT_POST,'date', FILTER_SANITIZE_SPECIAL_CHARS);
+    }
+    if(isset($_POST['location'])&& $_POST['location']!=""){
+        $filteredlocation = filter_input(INPUT_POST,'location', FILTER_SANITIZE_SPECIAL_CHARS);
     }
     
     
     
-    
-$postTitle = $filteredpostTitle;
-$postDescription = $filteredpostDescription;
-$postContent = $filteredpostContent;
-$postCategory = $filteredpostCategory;
-$postAuthor = $filteredpostAuthor;
-$postDate = $filteredpostDate;
+$title = $filteredtitle;
+$description = $filtereddescription;
+$content = $filteredcontent;
+$category = $filteredcategory;
+$author = $author;
+$date = $filtereddate;
+$location = $filteredlocation;
 $req->execute();
 
 //upload product image if it exists
-        if (!empty($_FILES[self::InputKey]['postTitle'])) {
-		Product::uploadFile($postTitle);
+        if (!empty($_FILES[self::InputKey]['title'])) {
+		Product::uploadFile($title);
 	}
 
     }
     
     public static function add() {
     $db = Db::getInstance();
-    $req = $db->prepare("Insert into blogPost(postTitle, postDescription, "
-            . "postContent, postCategory, postAuthor, postDate) "
-            . "values (:postTitle, :postDescription, :postContent, :postCategory, :postAuthor, :postDate)");
-    $req->bindParam(':postTitle', $postTitle);
-    $req->bindParam(':postDescription', $postDescription);
-    $req->bindParam(':postContent', $postContent);
-    $req->bindParam(':postCategory', $postCategory);
-    $req->bindParam(':postAuthor', $postAuthor);
-    $req->bindParam(':postDate', $postDate);
+    $req = $db->prepare("Insert into blogPost(title, description, "
+            . "content, category, author, date) "
+            . "values (:title, :description, :content, :category, :author, :date), :location");
+    $req->bindParam(':title', $title);
+    $req->bindParam(':description', $description);
+    $req->bindParam(':content', $content);
+    $req->bindParam(':category', $category);
+    $req->bindParam(':author', $author);
+    $req->bindParam(':date', $date);
+    $req->bindParam(':location', $location);
     
 // set parameters and execute
-    if(isset($_POST['postTitle'])&& $_POST['postTitle']!=""){
-        $filteredpostTitle = filter_input(INPUT_POST,'postTitle', FILTER_SANITIZE_SPECIAL_CHARS);
+    if(isset($_POST['title'])&& $_POST['title']!=""){
+        $filteredtitle = filter_input(INPUT_POST,'title', FILTER_SANITIZE_SPECIAL_CHARS);
     }
-    if(isset($_POST['postDescription'])&& $_POST['postDescription']!=""){
-        $filteredpostDescription = filter_input(INPUT_POST,'postDescription', FILTER_SANITIZE_SPECIAL_CHARS);
+    if(isset($_POST['description'])&& $_POST['description']!=""){
+        $filtereddescription = filter_input(INPUT_POST,'description', FILTER_SANITIZE_SPECIAL_CHARS);
     }
-     if(isset($_POST['postContent'])&& $_POST['postContent']!=""){
-        $filteredpostContent = filter_input(INPUT_POST,'postContent', FILTER_SANITIZE_SPECIAL_CHARS);
+     if(isset($_POST['content'])&& $_POST['content']!=""){
+        $filteredcontent = filter_input(INPUT_POST,'content', FILTER_SANITIZE_SPECIAL_CHARS);
     }
-    if(isset($_POST['postCategory'])&& $_POST['postCategory']!=""){
-        $filteredpostCategory = filter_input(INPUT_POST,'postCategory', FILTER_SANITIZE_SPECIAL_CHARS);
+    if(isset($_POST['category'])&& $_POST['category']!=""){
+        $filteredcategory = filter_input(INPUT_POST,'category', FILTER_SANITIZE_SPECIAL_CHARS);
     }
-    if(isset($_POST['postAuthor'])&& $_POST['postAuthor']!=""){
-        $filteredpostAuthor = filter_input(INPUT_POST,'postAuthor', FILTER_SANITIZE_SPECIAL_CHARS);
+    if(isset($_POST['author'])&& $_POST['author']!=""){
+        $filteredauthor = filter_input(INPUT_POST,'author', FILTER_SANITIZE_SPECIAL_CHARS);
     }
-    if(isset($_POST['postDate'])&& $_POST['postDate']!=""){
-        $filteredpostDate = filter_input(INPUT_POST,'postDate', FILTER_SANITIZE_SPECIAL_CHARS);
+    if(isset($_POST['date'])&& $_POST['date']!=""){
+        $filtereddate = filter_input(INPUT_POST,'date', FILTER_SANITIZE_SPECIAL_CHARS);
+    }
+    if(isset($_POST['location'])&& $_POST['location']!=""){
+        $filtereddate = filter_input(INPUT_POST,'location', FILTER_SANITIZE_SPECIAL_CHARS);
     }
     
     
     
-    
-$postTitle = $filteredpostTitle;
-$postDescription = $filteredpostDescription;
-$postContent = $filteredpostContent;
-$postCategory = $filteredpostCategory;
-$postAuthor = $filteredpostAuthor;
-$postDate = $filteredpostDate;
+$title = $filteredtitle;
+$description = $filtereddescription;
+$content = $filteredcontent;
+$category = $filteredcategory;
+$author = $filteredauthor;
+$date = $filtereddate;
+$location = $filteredlocation;
 $req->execute();
     }
 //upload product image

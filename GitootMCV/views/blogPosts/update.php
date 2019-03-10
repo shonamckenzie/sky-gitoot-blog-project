@@ -2,27 +2,31 @@
 <form action="" method="POST" class="w3-container" enctype="multipart/form-data">
     <h2>Update Item</h2>
     <p>
-        <input class="w3-input" type="text" name="postTitle" value="<?= $blogPost->postTitle; ?>">
+        <input class="w3-input" type="text" name="title" value="<?= $blogPost->title; ?>">
         <label>Title</label>
     </p>
     <p>
-        <input class="w3-input" type="text" name="postDescription" value="<?= $blogPost->postDescription; ?>" >
+        <input class="w3-input" type="text" name="description" value="<?= $blogPost->description; ?>" >
         <label>Description</label>
     </p>
      <p>
-        <input class="w3-input" type="text" name="postContent" value="<?= $blogPost->postContent; ?>">
+        <input class="w3-input" type="text" name="content" value="<?= $blogPost->content; ?>">
         <label>Content</label>
     </p>
     <p>
-        <input class="w3-input" type="text" name="postCategory" value="<?= $blogPost->postCategory; ?>" >
+        <input class="w3-input" type="text" name="category" value="<?= $blogPost->category; ?>" >
         <label>Category</label>
     </p> 
     <p>
-        <input class="w3-input" type="text" name="postAuthor" value="<?= $blogPost->postAuthor; ?>">
+        <input class="w3-input" type="text" name="author" value="<?= $blogPost->author; ?>">
         <label>Author</label>
     </p>
     <p>
-        <input class="w3-input" type="date" name="postDate" value="<?= $blogPost->postDate; ?>" >
+        <input class="w3-input" type="date" name="date" value="<?= $blogPost->date; ?>" >
+        <label>Date</label>
+    </p> 
+    <p>
+        <input class="w3-input" type="text" name="location" value="<?= $blogPost->location; ?>" >
         <label>Date</label>
     </p> 
     

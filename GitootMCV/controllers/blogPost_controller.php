@@ -6,6 +6,18 @@ class BlogPostController {
       $blogPosts = blogPost::all();
       require_once('views/blogposts/readAll.php');
     }
+    
+    public function readCOUPLES() {
+      // we store all the posts in a variable
+      $blogPosts = blogPost::all();
+      require_once('views/blogposts/readCOUPLES.php');
+    }
+    
+    
+    
+    
+    
+    
 
     public function read() {
       // we expect a url of form ?controller=posts&action=show&id=x
@@ -22,6 +34,8 @@ class BlogPostController {
      return call('pages','error');
  }
     }
+    
+    
     public function create() {
       // we expect a url of form ?controller=products&action=create
       // if it's a GET request display a blank form for creating a new product
