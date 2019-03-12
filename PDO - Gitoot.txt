@@ -4,12 +4,12 @@ getposts.php?
 
 
 <?php
-require_once('dbconn.php');
+require_once('connection.php');
 
 
     try {
         $stmt = $dbconn->query[b]('SELECT id, title,      
-        description[c], createdAt FROM post ORDER BY 
+        description[c], createdAt FROM blogPost ORDER BY 
         id DESC');
         while($row = $stmt->fetch()){
             
@@ -37,7 +37,7 @@ viewpost.php
 <?php
 
 
-require_once('dbconn.php');
+require_once('connection.php');
 
 
 $stmt = $dbconn->prepare[d]('SELECT id, title, content, createdAt FROM post WHERE id = :id');
@@ -60,15 +60,15 @@ echo '</div>';
 View Posts with author, location, category
 
 <?php
-require_once('dbconn.php');
+require_once('connection.php');
 
 
-    $stmt = $dbconn->prepare('SELECT `post`.`title`, `post`.`createdAt`, `post`.`content`, `users`.`name`, `location`.`name`, `category`.`name` FROM `users`
-    LEFT JOIN `post` ON `post`.`user_id` = `users`.`id`
-    LEFT JOIN `postLocation` ON `postLocation`.`post_id` = `post`.`id`
-    LEFT JOIN `location` ON `postLocation`.`location_id` = `location`.`id`
-    LEFT JOIN `postCategory` ON `postCategory`.`post_id` = `post`.`id`
-    LEFT JOIN `category` ON `postCategory`.`category_id` = `category`.`id`');
+    $stmt = $dbconn->prepare('SELECT blogPost.title, blogPost.createdAt, blogPost.content, users.username, location.locationname, category.categoryname FROM users
+    LEFT JOIN blogPost ON blogPost.user_id = users.id
+    LEFT JOIN blogLocation ON blogLocation.post_id = post.id
+    LEFT JOIN location ON blogLocation.location_id = location.id
+    LEFT JOIN blogCategory ON blogCategory.post_id = post.id
+    LEFT JOIN category ON blogCategory.category_id = category.id');
    $stmt->execute(array(':id' => $_GET['id']));
    $row = $stmt->fetch();
    if($row['id'] == ''){
@@ -86,22 +86,22 @@ echo '</div>';
 
 ?>
 
-View post by postLocation
+View post by blogLocation
 
 <?php
 
-require_once('dbconn.php');
+require_once('connection.php');
 
    $title  = trim($_GET["title"]);
-   $name  = trim($_GET["name"]);
+   $locationname  = trim($_GET["locationname"]);
    $id = trim($_GET[“post.id”]);
 
-$stmt = $dbconn->prepare('SELECT title, name FROM location
-    LEFT JOIN postLocation ON postLocation.location_id = location.id
-    LEFT JOIN post ON postLocation.post_id = post.id'
-    where location.name = :location.name);
+$stmt = $dbconn->prepare('SELECT title, locationname FROM location
+    LEFT JOIN blogLocation ON blogLocation.location_id = location.id
+    LEFT JOIN blogPost ON blogLocation.post_id = post.id'
+    where location.locationname = :location.locationname);
     $stmt->bindParam(':title, $title);
-    $stmt->bindParam(':name, $name);
+    $stmt->bindParam(':location.locationname, $locationname);
     $stmt->bindParam(':post.id, $id);
     $stmt->execute();
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -110,22 +110,22 @@ $stmt = $dbconn->prepare('SELECT title, name FROM location
 
 ?>
 
-View post by postCategory
+View post by blogCategory
 
 <?php
 
-require_once('dbconn.php');
+require_once('connection.php');
 
    $title  = trim($_GET["title"]);
-   $name  = trim($_GET["name"]);
+   $categoryname  = trim($_GET["categoryname"]);
    $id = trim($_GET[“post.id”]);
 
     SELECT title, name FROM category
-    LEFT JOIN postCategory ON postCategory.category_id = category.id
-    LEFT JOIN post ON postCategory.post_id = post.id
-    where category.name = category.name
+    LEFT JOIN blogCategory ON blogCategory.category_id = category.id
+    LEFT JOIN blogPost ON blogCategory.post_id = post.id
+    where category.categoryname = category.categoryname
     $stmt->bindParam(':title, $title);
-    $stmt->bindParam(':name, $name);
+    $stmt->bindParam(':category.categoryname, $categoryname);
     $stmt->bindParam(':post.id, $id);
     $stmt->execute();
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -139,26 +139,22 @@ addpost.php
 <?php
 
 
-  require_once('dbconn.php');
+  require_once('connection.php');
 
 
   $title = trim($_POST["title"]);
   $description = trim($_POST["description"]);
-  $image = trim($_POST["image"]);
   $content = trim($_POST["content"]);
-  $published = trim($_POST["published"]);
   $createdAt = trim($_POST["createdAt"]);
   
  
 
 
-    $stmt = $dbconn->prepare('INSERT INTO post(title, description, image, content, published, createdAt)
-    VALUES (:title, :description, :image, :content, :published, :createdAt, :updatedAt)');
+    $stmt = $dbconn->prepare('INSERT INTO blogPost(title, description, content, createdAt)
+    VALUES (:title, :description, :content, :createdAt)');
     $stmt->bindParam(':title, $title);
     $stmt->bindParam(':description, $description);
-    $stmt->bindParam(':image, $image);
     $stmt->bindParam(':content, $content);
-    $stmt->bindParam(':published, $published);
     $stmt->bindParam(':createdAt, $createdAt);
     
  
@@ -178,21 +174,19 @@ editpost.php
 <?php
 
 
-  require_once('dbconn.php');
+  require_once('connection.php');
 
 
  $title = trim($_POST["title"]);
   $description = trim($_POST["description"]);
   $content = trim($_POST["content"]);
-  $updatedAt = trim($_POST["updatedAt"]);
   $id = trim($_POST[“id”]);
 
 
-    $stmt = $dbconn->prepare('UPDATE post set title = :title, description = :description, content = :content, updatedAt = :updatedAt where id = :id')
+    $stmt = $dbconn->prepare('UPDATE blogPost set title = :title, description = :description, content = :content where id = :id')
     $stmt->bindParam(':title, $title);
     $stmt->bindParam(':description, $description);
     $stmt->bindParam(':content, $content);
-    $stmt->bindParam(':updatedAt, $updatedAt);
     $stmt->bindParam(':id, $id);
  
     if($stmt->execute()){
@@ -213,7 +207,7 @@ deletepost.php
 
 
 <?php
- require_once('dbconn.php');
+ require_once('connection.php');
 
 
 $result = 0;
@@ -221,7 +215,7 @@ echo $id = intval($_POST['pid']);
 
 
 if(intval($id)){
-  $stmt = $dbconn->prepare("DELETE FROM post WHERE id = :id");
+  $stmt = $dbconn->prepare("DELETE FROM blogPost WHERE id = :id");
   $stmt->bindParam(':id', $id, PDO::PARAM_INT);
   if($stmt->execute()){
     $result = 1;
