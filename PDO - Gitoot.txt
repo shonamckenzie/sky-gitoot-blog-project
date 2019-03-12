@@ -1,26 +1,4 @@
-﻿DB Connection
-dbconn.php
-
-
-<?php
-
-
-$username  = 'author';
-$password  = 'insertpassword';[a]
-$result = 0;
-try {
-    $dbconn = new PDO('mysql:host=localhost;dbname=gitoot', $username, $password);
-} catch (PDOException $e) {
-    print "Error!: " . $e->getMessage() . "<br/>";
-    die();
-}
-
-
-
-
-
-
-Full List of Blog Posts
+    Full List of Blog Posts
 index.php?
 getposts.php?
 
@@ -79,7 +57,82 @@ echo '</div>';
 ?>
 
 
+View Posts with author, location, category
 
+<?php
+require_once('dbconn.php');
+
+
+    $stmt = $dbconn->prepare('SELECT `post`.`title`, `post`.`createdAt`, `post`.`content`, `users`.`name`, `location`.`name`, `category`.`name` FROM `users`
+    LEFT JOIN `post` ON `post`.`user_id` = `users`.`id`
+    LEFT JOIN `postLocation` ON `postLocation`.`post_id` = `post`.`id`
+    LEFT JOIN `location` ON `postLocation`.`location_id` = `location`.`id`
+    LEFT JOIN `postCategory` ON `postCategory`.`post_id` = `post`.`id`
+    LEFT JOIN `category` ON `postCategory`.`category_id` = `category`.`id`');
+   $stmt->execute(array(':id' => $_GET['id']));
+   $row = $stmt->fetch();
+   if($row['id'] == ''){
+   header('Location: ./');
+   exit;[e]
+}
+echo '<div>';
+   echo '<h1>'.$row['title'].'</h1>';
+   echo '<p>Posted on '.date('jS M Y', strtotime($row['createdAt'])).'</p>';
+   echo '<p>'.$row['content'].'</p>';     
+   echo '<p>'.$row['name'].'</p>'; 
+   echo '<p>'.$row['name'].'</p>'; 
+   echo '<p>'.$row['name'].'</p>';            
+echo '</div>';
+
+?>
+
+View post by postLocation
+
+<?php
+
+require_once('dbconn.php');
+
+   $title  = trim($_GET["title"]);
+   $name  = trim($_GET["name"]);
+   $id = trim($_GET[“post.id”]);
+
+$stmt = $dbconn->prepare('SELECT title, name FROM location
+    LEFT JOIN postLocation ON postLocation.location_id = location.id
+    LEFT JOIN post ON postLocation.post_id = post.id'
+    where location.name = :location.name);
+    $stmt->bindParam(':title, $title);
+    $stmt->bindParam(':name, $name);
+    $stmt->bindParam(':post.id, $id);
+    $stmt->execute();
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
+    echo json_encode($data);
+    $dbconn = null; 
+
+?>
+
+View post by postCategory
+
+<?php
+
+require_once('dbconn.php');
+
+   $title  = trim($_GET["title"]);
+   $name  = trim($_GET["name"]);
+   $id = trim($_GET[“post.id”]);
+
+    SELECT title, name FROM category
+    LEFT JOIN postCategory ON postCategory.category_id = category.id
+    LEFT JOIN post ON postCategory.post_id = post.id
+    where category.name = category.name
+    $stmt->bindParam(':title, $title);
+    $stmt->bindParam(':name, $name);
+    $stmt->bindParam(':post.id, $id);
+    $stmt->execute();
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
+    echo json_encode($data);
+    $dbconn = null; 
+
+?>
 
 Submit Post
 addpost.php
@@ -99,8 +152,8 @@ addpost.php
  
 
 
-    $stmt = $dbconn->prepare("INSERT INTO post(title, description, image, content, published, createdAt)
-    VALUES (:title, :description, :image, :content, :published, :createdAt, :updatedAt)");
+    $stmt = $dbconn->prepare('INSERT INTO post(title, description, image, content, published, createdAt)
+    VALUES (:title, :description, :image, :content, :published, :createdAt, :updatedAt)');
     $stmt->bindParam(':title, $title);
     $stmt->bindParam(':description, $description);
     $stmt->bindParam(':image, $image);
@@ -116,7 +169,7 @@ addpost.php
 
     echo $result;
     $dbconn = null;
-
+?>
 
 Edit Post
 editpost.php
@@ -130,16 +183,14 @@ editpost.php
 
  $title = trim($_POST["title"]);
   $description = trim($_POST["description"]);
-  $image = trim($_POST["image"]);
   $content = trim($_POST["content"]);
   $updatedAt = trim($_POST["updatedAt"]);
   $id = trim($_POST[“id”]);
 
 
-    $stmt = $dbconn->prepare("UPDATE post set title = :title, description = :description, image = :image, content = :content, updatedAt = :updatedAt where id = :id”)
+    $stmt = $dbconn->prepare('UPDATE post set title = :title, description = :description, content = :content, updatedAt = :updatedAt where id = :id')
     $stmt->bindParam(':title, $title);
     $stmt->bindParam(':description, $description);
-    $stmt->bindParam(':image, $image);
     $stmt->bindParam(':content, $content);
     $stmt->bindParam(':updatedAt, $updatedAt);
     $stmt->bindParam(':id, $id);
