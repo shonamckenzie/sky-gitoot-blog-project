@@ -7,8 +7,7 @@ use gitoot;
 
 create table users (
  id int(11) not null auto_increment primary key,
- name varchar(255) not null unique,
- email varchar(255) not null unique,
+ username varchar(255) not null unique,
  role enum('User', 'Admin') default null,
  password varchar(255) not null,
  createdAt timestamp null default current_timestamp,
@@ -21,7 +20,6 @@ create table post (
  user_id int(11) default null,
  title varchar(255) not null,
  description varchar(255) not null unique,
- image varchar(255) not null,
  content longtext not null,
  published tinyint(1) not null,
  createdAt timestamp not null default current_timestamp on update current_timestamp,
@@ -41,7 +39,7 @@ create table post (
 
 create table category (
 id int(11) not null auto_increment primary key,
-name varchar(255) not null,
+categoryname varchar(255) not null,
 description varchar(255) not null unique
 );
 
@@ -60,7 +58,7 @@ category_id int(11) not null
 
 create table location(
 id int(11) not null auto_increment primary key,
-name varchar(255) not null,
+locationname varchar(255) not null,
 locDescription varchar(255) not null unique
 );
 
@@ -90,19 +88,19 @@ Repeat same steps for postLocation
 
 
 
-insert into users(id, name, email, role, password, createdAt, updatedAt)
-values(1, 'Shona', 'shona.mckenzie137@gmail.com', 'Admin', 'myPassword', '2019-03-09 17:04:00', '2019-03-09 17:04:00');
+insert into users(id, username, role, password, createdAt, updatedAt)
+values(1, 'Shona', 'Admin', 'myPassword', '2019-03-09 17:04:00', '2019-03-09 17:04:00');
 
 
 
 
-insert into post(id, user_id, title, description, image, content, published, createdAt, updatedAt)
-values(1, 1, 'On the bonnie bonnie banks of Loch Lomond…', 'You can tak the high road, or you can tak the low road…', 'lochlomond.jpg', 'This not-so-little haven is home to our largest loch in Scotland and probably our second most famous after Loch Ness.  It was Scotlands first national park and as soon as you arrive you can instantly tell why we long to preserve it - and why year after year people return to its banks.', 1, '2019-03-09 17:04:00', '2019-03-09 17:04:00');
+insert into post(id, user_id, title, description, content, published, createdAt, updatedAt)
+values(1, 1, 'On the bonnie bonnie banks of Loch Lomond…', 'You can tak the high road, or you can tak the low road…', 'This not-so-little haven is home to our largest loch in Scotland and probably our second most famous after Loch Ness.  It was Scotlands first national park and as soon as you arrive you can instantly tell why we long to preserve it - and why year after year people return to its banks.', 1, '2019-03-09 17:04:00', '2019-03-09 17:04:00');
 
 
 
 
-insert into category(id, name, description)
+insert into category(id, categoryname, description)
 values(1, 'Family', 'family'),
 (2, 'Couples', 'couples'),
 (3, 'Dog Lovers', 'dog lovers');
@@ -116,7 +114,7 @@ values(1,1,1);
 
 
 
-insert into location(id, name, locDescription)
+insert into location(id, locationname, locDescription)
 values(1, 'Argyle and Bute', 'argyle and bute'),
 (2, 'Fife', 'fife');
 
